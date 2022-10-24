@@ -1,0 +1,27 @@
+{
+  "name": "kitube",
+  "version": "1.0.0",
+  "description": "The best way to watch videos",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nimikgnoej/kitube.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
+  "author": "Jeong ki-min",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nimikgnoej/kitube/issues"
+  },
+  "homepage": "https://github.com/nimikgnoej/kitube#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.19.4",
+    "nodemon": "^2.0.20"
+  }
+}
