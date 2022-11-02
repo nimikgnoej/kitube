@@ -1,4 +1,9 @@
 extends base.pug
+include mixins/video
 
 block content 
     h2 Kitube에 오신 것을 환영합니다!
+    each video in videos 
+        +video(video)
+    else 
+        div 현재는 동영상이 없네요 :(
