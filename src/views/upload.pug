@@ -1,6 +1,10 @@
 extends base.pug
 
 block content
+    if errorMessage 
+        span=errorMessage
     form(method="POST")
-        input(placeholder="영상 제목" , required,type="text",name="uploadTitle")
+        input(placeholder="영상 제목을 써주세요." , required,type="text",name="uploadTitle")
+        input(placeholder="영상 설명을 해주세요." , required,type="text",name="description")
+        input(placeholder="해시태그, 여러개를 콤마로 구분하여 작성해보세요." , required,type="text",name="hashtags")
         input(type="submit", value="업로드하기")
