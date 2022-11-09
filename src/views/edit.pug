@@ -1,7 +1,9 @@
 extends base.pug
 block content 
-    h4 Change Title of video!
+    h4 영상을 수정해보세요!
     form(method="POST")
         input(name="title", placeholder="Video Title" ,value=video.title,required)
+        input(placeholder="영상 설명을 해주세요." , required,type="text",name="description",value=video.description)
+        input(placeholder="해시태그, 여러개를 콤마로 구분하여 작성해보세요." , required,type="text",name="hashtags",value=video.hashtags.join())
         input(type="submit", value="Save")
 
