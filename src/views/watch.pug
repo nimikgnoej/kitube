@@ -1,5 +1,7 @@
 extends base.pug
 
 block content 
-    h3 #{video.views}회
+    div 
+        p=video.description
+        small=video.createdAt  
     a(href=`${video.id}/edit`) 수정 &rarr;
