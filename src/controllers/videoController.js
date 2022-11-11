@@ -2,7 +2,7 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
   const videos = await Video.find({});
-  return res.render("home", { pageTitle: "Home", videos });
+  return res.render("home", { pageTitle: "기튜브", videos });
 };
 export const watch = async (req, res) => {
   const id = req.params.id;
@@ -45,7 +45,7 @@ export const postEdit = async (req, res) => {
 }
 
 export const getUpload = (req, res) => {
-  return res.render("upload", { pageTitle: "Upload" });
+  return res.render("upload", { pageTitle: "영상 업로드" });
 }
 
 export const postUpload = async (req, res) => {
@@ -62,7 +62,7 @@ export const postUpload = async (req, res) => {
     });
     return res.redirect("/");
   } catch (error) {
-    return res.render("upload", { pageTitle: "Upload", errorMessage: error._message, });
+    return res.render("upload", { pageTitle: "영상 업로드", errorMessage: error._message, });
   }
 }
 
@@ -82,5 +82,5 @@ export const search = async (req, res) => {
       },
     });
   };
-  return res.render("search", { pageTitle: "Search", videos });
+  return res.render("search", { pageTitle: "영상 검색", videos });
 }
