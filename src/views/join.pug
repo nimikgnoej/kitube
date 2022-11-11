@@ -1,0 +1,10 @@
+extends base
+
+block content 
+    form(method="POST")
+        input(name="name",type="text", required, placeholder="이름")
+        input(name="email",type="email", required, placeholder="이메일 주소")
+        input(name="username",type="text", required, placeholder="사용자 이름")
+        input(name="password",type="password", required, placeholder="비밀번호")
+        input(name="location",type="text", required, placeholder="거주 지역")
+        input(type="submit",value="회원가입")
