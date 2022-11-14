@@ -29,7 +29,7 @@ export const postEdit = async (req, res) => {
   const video = await Video.exists({ _id: id });
 
   if (!video) {
-    return res.render("404", { pageTitle: "Video Not Found" });
+    return res.status(404).render("404", { pageTitle: "Video Not Found" });
   }
 
   try {
@@ -62,7 +62,7 @@ export const postUpload = async (req, res) => {
     });
     return res.redirect("/");
   } catch (error) {
-    return res.render("upload", { pageTitle: "영상 업로드", errorMessage: error._message, });
+    return res.status(400).render("upload", { pageTitle: "영상 업로드", errorMessage: error._message, });
   }
 }
 
