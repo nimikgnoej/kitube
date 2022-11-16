@@ -5,9 +5,12 @@ html(lang="ko")
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")
     body 
         header
-            h1=pageTitle
+            if loggedIn 
+                    h1 환영합니다! #{loggedInUser.name}님 :D
+            else 
+                h1=pageTitle
             nav 
-                ul 
+                ul  
                     li 
                         a(href="/") 기튜브 
                     if loggedIn 
