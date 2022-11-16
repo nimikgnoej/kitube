@@ -1,8 +1,6 @@
-import { trusted } from "mongoose";
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
-import { token } from "morgan";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "회원가입" })
 export const postJoin = async (req, res) => {
@@ -72,6 +70,7 @@ export const finishGithubLogin = async (req, res) => {
     };
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
+
     const tokenRequest = await (
         await fetch(finalUrl, {
             method: "POST",
@@ -80,6 +79,7 @@ export const finishGithubLogin = async (req, res) => {
             },
         })
     ).json();
+
     if ("access_token" in tokenRequest) {
         const { access_token } = tokenRequest;
         const apiUrl = "https://api.github.com"
@@ -90,6 +90,7 @@ export const finishGithubLogin = async (req, res) => {
                 },
             })
         ).json();
+
         const emailData = await (
             await fetch(`${apiUrl}/user/emails`, {
                 headers: {
@@ -120,6 +121,49 @@ export const finishGithubLogin = async (req, res) => {
         return res.redirect("/");
     } else {
         return res.redirect("/login");
+    }
+}
+//?client_id = ${ REST_API_KEY }& redirect_uri=${ REDIRECT_URI }& response_type=code
+
+export const startKakaoLogin = (req, res) => {
+    const baseUrl = "https://kauth.kakao.com/oauth/authorize";
+    const config = {
+        client_id: "7e713af9072da77a896bfedf3c8685bb",
+        redirect_uri: "http://localhost:4000/users/kakao/finish",
+        response_type: "code",
+        scope: "account_email,gender",
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    return res.redirect(finalUrl);
+}
+
+export const finishKakaoLogin = async (req, res) => {
+    const baseUrl = "https://kauth.kakao.com/oauth/token";
+    const config = {
+        grant_type: "authorization_code",
+        client_id: "7e713af9072da77a896bfedf3c8685bb",
+        redirect_uri: "http://localhost:4000/users/kakao/finish",
+        code: req.query.code,
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    const tokenRequest = await (
+        await fetch(finalUrl, {
+            method: "POST",
+        })
+    ).json();
+
+    if ("access_token" in tokenRequest) {
+        const { access_token } = tokenRequest;
+        const apiUrl = "https://kapi.kakao.com";
+        const kakaoData = await (fetch(`${apiUrl}/v2/user/me`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        }));
+        console.log(kakaoData);
     }
 }
 
