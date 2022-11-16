@@ -1,6 +1,7 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import { response } from "express";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "회원가입" })
 export const postJoin = async (req, res) => {
@@ -131,7 +132,7 @@ export const startKakaoLogin = (req, res) => {
         client_id: "7e713af9072da77a896bfedf3c8685bb",
         redirect_uri: "http://localhost:4000/users/kakao/finish",
         response_type: "code",
-        scope: "account_email,gender",
+        scope: "account_email,gender,profile_nickname",
     }
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
@@ -145,25 +146,38 @@ export const finishKakaoLogin = async (req, res) => {
         client_id: "7e713af9072da77a896bfedf3c8685bb",
         redirect_uri: "http://localhost:4000/users/kakao/finish",
         code: req.query.code,
-    }
+    };
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
     const tokenRequest = await (
         await fetch(finalUrl, {
             method: "POST",
+            "Content-Type": "application/x-www-form-urlencoded",
         })
     ).json();
 
     if ("access_token" in tokenRequest) {
         const { access_token } = tokenRequest;
         const apiUrl = "https://kapi.kakao.com";
-        const kakaoData = await (fetch(`${apiUrl}/v2/user/me`, {
-            method: "POST",
+        const kakaoData = await (await (fetch(`${apiUrl}/v2/user/me`, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
             },
-        }));
-        console.log(kakaoData);
+        }))).json();
+
+        let user = await User.findOne({ email: kakaoData.kakao_account.email });
+        if (!user) {
+            user = await User.create({
+                name: kakaoData.kakao_account.profile.nickname,
+                username: kakaoData.kakao_account.profile.nickname,
+                email: kakaoData.kakao_account.email,
+                password: "",
+                socialOnly: true,
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
     }
 }
 
