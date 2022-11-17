@@ -124,7 +124,6 @@ export const finishGithubLogin = async (req, res) => {
         return res.redirect("/login");
     }
 }
-//?client_id = ${ REST_API_KEY }& redirect_uri=${ REDIRECT_URI }& response_type=code
 
 export const startKakaoLogin = (req, res) => {
     const baseUrl = "https://kauth.kakao.com/oauth/authorize";
@@ -181,7 +180,52 @@ export const finishKakaoLogin = async (req, res) => {
     }
 }
 
-export const edit = (req, res) => res.send("Edit User");
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", { pageTitle: "프로필 수정" });
+}
+
+export const postEdit = async (req, res) => {
+    const {
+        name,
+        email,
+        username,   //=> 새로 바꾼애들
+        location,
+    } = req.body;
+    const id = req.session.user._id;
+
+    //email이 중복될때
+    if (email !== req.session.user.email) {
+        const dupEmail = await User.exists({ email });
+        if (dupEmail) {
+            return res.render("edit-profile", { pageTitle: "프로필 수정", errorMessage: "이메일이 다른 사용자와 중복돼요 :(" });
+        }
+    }
+    //이름이 중복될때
+    if (name !== req.session.user.name) { //이름을 바꾸려고 할때 
+        const dupName = await User.exists({ name });
+        if (dupName) { //중복되는 이름이 있다면..
+            return res.render("edit-profile", { pageTitle: "프로필 수정", errorMessage: "이름이 중복돼요 :(" });
+        }
+    }
+    //사용자 이름이 중복될때
+    if (username !== req.session.user.username) {
+        const dupUserName = await User.exists({ username });
+        if (dupUserName) {
+            return res.render("edit-profile", { pageTitle: "프로필 수정", errorMessage: "사용자 이름이 중복돼요 :(" });
+        }
+    }
+
+
+    const updatedUser = await User.findByIdAndUpdate(id, {
+        name: name,
+        email: email,
+        username: username,
+        location: location,
+    }, { new: true });
+    req.session.user = updatedUser;
+
+    return res.redirect("/users/edit");
+}
 export const see = (req, res) => res.send("See User");
 export const logout = (req, res) => {
     req.session.destroy();
