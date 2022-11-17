@@ -15,6 +15,10 @@ html(lang="ko")
                         a(href="/") 기튜브 
                     if loggedIn 
                         li 
+                            a(href="/videos/upload") 영상 업로드
+                        li 
+                            a(href="/users/edit") 프로필 수정
+                        li 
                             a(href="/users/logout") 로그아웃
                     else 
                         li 
@@ -23,8 +27,6 @@ html(lang="ko")
                             a(href="/login") 로그인     
                     li 
                         a(href="/search") 검색
-                    li 
-                        a(href="/videos/upload") 영상 업로드
         main
             block content
 include partials/footer.pug
