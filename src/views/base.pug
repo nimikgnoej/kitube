@@ -5,10 +5,7 @@ html(lang="ko")
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")
     body 
         header
-            if loggedIn 
-                    h1 환영합니다! #{loggedInUser.name}님 :D
-            else 
-                h1=pageTitle
+            h1=pageTitle
             nav 
                 ul  
                     li 
@@ -16,6 +13,8 @@ html(lang="ko")
                     if loggedIn 
                         li 
                             a(href="/videos/upload") 영상 업로드
+                        li 
+                            a(href=`/users/${loggedInUser._id}`) 내 프로필
                         li 
                             a(href="/users/edit") 프로필 수정
                         li 
