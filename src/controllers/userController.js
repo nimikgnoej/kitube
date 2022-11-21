@@ -2,6 +2,7 @@ import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import { response } from "express";
+import { render } from "pug";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "회원가입" })
 export const postJoin = async (req, res) => {
@@ -192,6 +193,8 @@ export const postEdit = async (req, res) => {
         location,
     } = req.body;
     const id = req.session.user._id;
+    const { avatarUrl } = req.session.user;
+    const { file } = req;
 
     //email이 중복될때
     if (email !== req.session.user.email) {
@@ -217,6 +220,7 @@ export const postEdit = async (req, res) => {
 
 
     const updatedUser = await User.findByIdAndUpdate(id, {
+        avatarUrl: file ? file.path : avatarUrl,
         name: name,
         email: email,
         username: username,
@@ -226,8 +230,44 @@ export const postEdit = async (req, res) => {
 
     return res.redirect("/users/edit");
 }
-export const see = (req, res) => res.send("See User");
+
+export const getChangePassword = (req, res) => {
+    if (req.session.user.socialOnly === true) {
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", { pageTitle: "비밀번호 변경" });
+}
+
+export const postChangePassword = async (req, res) => {
+    const {
+        session: {
+            user: { _id, password },
+        },
+        body: { oldPassword, newPassword, newPasswordConfirmation },
+    } = req;
+    const ok = await bcrypt.compare(oldPassword, password);
+    if (!ok) {
+        return res.status(400).render("users/change-password", { pageTitle: "비밀번호 변경", errorMessage: "현재 비밀번호가 일치하지 않아요 :(" });
+    }
+    if (newPassword !== newPasswordConfirmation) {
+        return res.status(400).render("users/change-password", { pageTitle: "비밀번호 변경", errorMessage: "비밀번호를 다시 확인해주세요!" });
+    }
+    const user = await User.findById(_id);
+    user.password = newPassword;
+    await user.save();
+    req.session.user.password = user.password;
+    return res.redirect("/users/logout");
+}
+
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
 };
+export const see = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+        return res.status(404).render("404", { pageTitle: "유저가 존재하지 않음." });
+    }
+    return res.render("users/profile", { pageTitle: user.name, user });
+}
