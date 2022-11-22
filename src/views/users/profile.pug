@@ -1,4 +1,6 @@
 extends ../base
+include ../mixins/video
 
 block content 
-    span hi
+    each video in user.videos
+        +video(video)
