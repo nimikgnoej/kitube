@@ -2,7 +2,13 @@ extends base.pug
 include mixins/video
 
 block content 
-    each video in videos 
-        +video(video)
-    else 
-        div 현재는 동영상이 없네요 :(
+    div.video__grid
+        each video in videos 
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
+        else 
+            span.empty__message 현재는 동영상이 없네요 :(
