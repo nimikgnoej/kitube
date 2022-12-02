@@ -2,9 +2,13 @@ extends base.pug
 include mixins/video
 
 block content 
-    form(method="GET")
+    form(method="GET").search__form
         input(placeholder="제목을 통해 검색하세요!",type="text",name="keyword")
-        input(type="submit" , value="검색")
+        button 
+            i.fas.fa-search 
 
-    each video in videos 
-        +video(video)
+    div.video-grid 
+        each video in videos 
+            +video(video)
+        else 
+            span.empty__message 비디오가 존재하지 않아요 :(
