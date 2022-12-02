@@ -8,10 +8,7 @@ block content
         input(name="password",type="password", required, placeholder="비밀번호")
         input(type="submit",value="로그인 하기")
         br
-        a(href="/users/github/start") 깃허브로 로그인 하기  &rarr;
-        br
-        a(href="/users/kakao/start") 카카오로 로그인 하기  &rarr;
-    hr
-    div 
+        include partials/social-login
+    div.auth-switch
         span 계정이 없으신가요?    
         a(href="/join") 계정 생성하기 &rarr;
