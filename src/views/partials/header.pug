@@ -10,11 +10,16 @@ header
                 li 
                     a(href="/videos/upload") 영상 업로드
                 li 
-                    a(href=`/users/${loggedInUser._id}`) 내 프로필
-                li 
                     a(href="/users/edit") 프로필 수정
                 li 
                     a(href="/users/logout") 로그아웃
+                li 
+                    a(href=`/users/${loggedInUser._id}`)
+                        if loggedInUser === undefined
+                            span 😀
+                        else 
+                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
+
             else 
                 li 
                     a(href="/login") 로그인     
