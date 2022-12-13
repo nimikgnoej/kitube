@@ -48,6 +48,7 @@ export const postEdit = async (req, res) => {
       description,
       hashtags: Video.formathashtags(hashtags),
     });
+    req.flash("success", "변경사항이 저장되었습니다.")
     return res.redirect(`/videos/${id}`);
   } catch {
     return res.render("edit", { pageTitle: `이곳에서 영상을 수정하세요!`, video });
@@ -93,6 +94,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "권한이 없습니다.");
     return res.status(403).redirect("/")
   }
   await Video.findByIdAndDelete(id);
