@@ -1,20 +1,21 @@
 extends base.pug
 
-block content
-    div 
-        video#preview
-        button#actionBtn  영상 녹화하기
-    if errorMessage 
-        span=errorMessage
-    form(method="POST",enctype="multipart/form-data")
-        lable(for="video") 영상 파일
-        input(type="file",accept="video/*",required,id="video",name="video")
-        lable(for="thumb") 썸네일 파일
-        input(type="file",accept="image/*",required,id="thumb",name="thumb")
-        input(placeholder="영상 제목을 써주세요." , required,type="text",name="uploadTitle")
-        input(placeholder="영상 설명을 해주세요." , required,type="text",name="description")
-        input(placeholder="해시태그, 여러개를 콤마로 구분하여 작성해보세요." , required,type="text",name="hashtags")
-        input(type="submit", value="업로드하기")
+block content   
+    div.upload__container
+        div.upload__video
+            video#preview
+            button#actionBtn.social__btn  영상 녹화하기
+        if errorMessage 
+            span=errorMessage
+        form(method="POST",enctype="multipart/form-data")
+            lable(for="video") 영상 파일
+            input(type="file",accept="video/*",required,id="video",name="video")
+            lable(for="thumb") 썸네일 파일
+            input(type="file",accept="image/*",required,id="thumb",name="thumb")
+            input(placeholder="영상 제목을 써주세요." , required,type="text",name="uploadTitle")
+            input(placeholder="영상 설명을 해주세요." , required,type="text",name="description")
+            input(placeholder="해시태그, 여러개를 콤마로 구분하여 작성해보세요." , required,type="text",name="hashtags")
+            input(type="submit", value="업로드하기")
 
 block scripts   
     script(src="/static/js/recorder.js")
