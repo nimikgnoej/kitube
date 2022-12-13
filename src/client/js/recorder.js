@@ -60,17 +60,10 @@ const handleDownload = async () => {
     actionBtn.addEventListener("click", handleStart);
 }
 
-const handleStop = () => {
-    actionBtn.innerText = "영상 다운로드하기";
-    actionBtn.removeEventListener("click", handleStop);
-    actionBtn.addEventListener("click", handleDownload);
-    recorder.stop();
-}
-
 const handleStart = () => {
-    actionBtn.innerText = "녹화 중지하기";
+    actionBtn.innerText = "녹화중...";
+    actionBtn.disabled = true;
     actionBtn.removeEventListener("click", handleStart);
-    actionBtn.addEventListener("click", handleStop);
     recorder = new MediaRecorder(stream);
     recorder.ondataavailable = (e) => {
         videoFile = URL.createObjectURL(e.data);
@@ -78,12 +71,18 @@ const handleStart = () => {
         video.src = videoFile;
         video.loop = true;
         video.play();
+        actionBtn.innerText = "다운로드";
+        actionBtn.disabled = false;
+        actionBtn.addEventListener("click", handleDownload);
     }
     recorder.start();
+    setTimeout(() => {
+        recorder.stop();
+    }, 5000);
 }
 
 const init = async () => {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { width: 400, height: 300 } });
+    stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { width: 1024, height: 576 } });
     video.srcObject = stream;
     video.play();
 }
