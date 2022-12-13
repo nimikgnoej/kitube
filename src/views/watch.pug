@@ -24,11 +24,20 @@ block content
         small=video.createdAt  
     div 
         small Uploaded by 
-        a(href=`/users/${video.owner._id}`) #{video.owner.name}
-    if String(video.owner._id) === String(loggedInUser._id) 
-        a(href=`${video.id}/edit`) 수정 🛠
-        br
-        a(href=`${video.id}/delete`) 삭제 ❌
+            a(href=`/users/${video.owner._id}`) #{video.owner.name}
+            br
+        if String(video.owner._id) === String(loggedInUser._id) 
+            a(href=`${video.id}/edit`) 수정 🛠
+            br
+            a(href=`${video.id}/delete`) 삭제 ❌
+
+    if loggedIn
+        div.video__comments
+            form.video__comment-form#commentForm
+                textarea(cols="30", rows="10",placeholder = "댓글을 작성해보세요!")
+                button 댓글 
+
 
 block scripts 
     script(src="/static/js/videoPlayer.js")
+    script(src="/static/js/commentSection.js")
