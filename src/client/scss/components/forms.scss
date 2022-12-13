@@ -8,7 +8,8 @@ form {
     ;
 }
 
-input:not([type="range"]) {
+input:not([type="range"]),
+input[type="submit"] {
     all: unset;
     padding: 15px 20px;
     border-radius: 5px;
@@ -34,10 +35,23 @@ input[type="submit"] {
 .social__btn {
     border-radius: 5px;
     padding: 10px 10px;
+    background-color: white;
     text-align: center;
     cursor: pointer;
     display: block;
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 }
+
+#actionBtn {}
 
 .social-login__github {
     background-color: #24883b;
