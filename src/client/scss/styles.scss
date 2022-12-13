@@ -14,6 +14,7 @@
 @import "./screens/search.scss";
 @import "./screens/profile.scss";
 @import "./screens/edit-profile.scss";
+@import "./screens/upload.scss";
 
 //Defaults
 
@@ -34,4 +35,40 @@ main {
     width: 100%;
     margin: 0 auto;
     margin-top: 50px;
+}
+
+@keyframes goAway {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    50% {
+        transform: none;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
+.message {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 30px;
+    max-width: 200px;
+    padding: 10px 20px;
+    border-radius: 10000px;
+    text-align: center;
+    font-size: 20px;
+    animation: goAway 7s ease-in-out forwards;
+
+    &.error {
+        background-color: tomato;
+        color: white;
+    }
 }
