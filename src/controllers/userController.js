@@ -263,8 +263,8 @@ export const postChangePassword = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    req.session.destroy();
     req.flash("info", "Good Bye");
+    req.session.destroy();
     return res.redirect("/");
 };
 export const see = async (req, res) => {
