@@ -18,8 +18,11 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use((req, res, next) => {
-    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.header("Cross-Origin-Opener-Policy", "same-origin");
+    res.header("Cross-Origin-Embedder-Policy", "credentialless");
+    res.header("Access-Control-Allow-Headers");
+    res.header("Origin,X-Requested-With,Content-Type,Accept");
     next();
 });
 

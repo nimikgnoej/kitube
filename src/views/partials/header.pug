@@ -19,10 +19,10 @@ header
                         if loggedInUser === undefined
                             span 😀
                         else 
-                            if loggedInUser.socialOnly
+                            if loggedInUser.avatarUrl.includes("github")
                                 img.header__avatar(src=loggedInUser.avatarUrl)
                             else 
-                                img.header__avatar(src="/" + loggedInUser.avatarUrl)
+                                img.header__avatar(src=loggedInUser.avatarUrl)
 
             else 
                 li 
