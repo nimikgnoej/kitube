@@ -12,7 +12,8 @@ const s3 = new aws.S3({
 const multerUploader = multerS3({
     s3: s3,
     bucket: 'kitubee',
-    acl: "public-read"
+    acl: "public-read",
+    contentType: multerS3.AUTO_CONTENT_TYPE,
 });
 
 export const localsMiddleware = (req, res, next) => {
